@@ -127,7 +127,6 @@ const Register = () => {
           ...prev,
           [name]: "Password and Confirm Password should match",
         }));
-        console.log(registerErrorMessage);
       } else {
         if (registerErrorMessage.hasOwnProperty(name)) {
           const errMessage = registerErrorMessage;
