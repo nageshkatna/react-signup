@@ -1,28 +1,28 @@
 import ApiService from "./ApiService";
-import { IFormData, IAuthResult, Options, ISignUp } from "../types/index.types";
+import { IFormData, AuthResultT, Options, ISignUp, TokenT } from "../types/index.types";
 import { QueryKey } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 
 const AuthenticationService = {
   authenticate: async (body: IFormData) => {
     const options: Options = {
-      url: `${import.meta.env.VITE_APP_API_BASE_URL}/user/authentication`,
+      url: `${import.meta.env.VITE_APP_API_BASE_URL}/login/`,
       method: "POST",
       body: JSON.stringify({ ...body }),
     };
 
-    const response = await ApiService.fetchApi<IAuthResult>({ ...options });
+    const response = await ApiService.fetchApi<TokenT>({ ...options });
 
     return response;
   },
   register: async (body: ISignUp) => {
     const options: Options = {
-      url: `${import.meta.env.VITE_APP_API_BASE_URL}/user/register`,
+      url: `${import.meta.env.VITE_APP_API_BASE_URL}/register/`,
       method: "POST",
       body: JSON.stringify({ ...body }),
     };
 
-    const response = await ApiService.fetchApi<IAuthResult>({ ...options });
+    const response = await ApiService.fetchApi<AuthResultT>({ ...options });
 
     return response;
   },
@@ -32,7 +32,7 @@ const AuthenticationService = {
       return false;
     }
     const options: Options = {
-      url: `${import.meta.env.VITE_APP_API_BASE_URL}/api/verify`,
+      url: `${import.meta.env.VITE_APP_API_BASE_URL}/view/`,
       method: "GET",
       header: { token },
     };

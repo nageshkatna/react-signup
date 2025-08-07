@@ -11,7 +11,6 @@ const PrivateRoutes = ({ children }: PrivateRouteProps) => {
 
   useEffect(() => {
     if (!isVerified) {
-      console.log("Not Verified");
       navigate("/login", { replace: true, state: { from: location } });
     }
   }, [isVerified, location, navigate]);

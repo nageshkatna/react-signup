@@ -3,8 +3,14 @@ export interface IFormData {
   password: string;
 }
 
-export type IAuthResult = {
-  token?: string;
+export type AuthResultT = {
+  tokens?: TokenT;
   userId?: string;
   message?: string;
+};
+
+export type TokenT = {
+  refresh: string;
+  access: string;
+  non_field_errors?: string;
 };

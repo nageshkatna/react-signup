@@ -22,8 +22,8 @@ const Register = () => {
   const [formData, setFormData] = useState<ISignUp>({
     email: "",
     password: "",
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
   });
   const { verifyUser, isVerified } = useAuthContext();
   const navigate = useNavigate();
@@ -80,7 +80,7 @@ const Register = () => {
         };
         setFormData(newArr);
       }
-    } else if (name === "firstName") {
+    } else if (name === "first_name") {
       const re = /^[A-Za-z]+$/;
 
       if (!re.test(value)) {
@@ -101,7 +101,7 @@ const Register = () => {
         };
         setFormData(newArr);
       }
-    } else if (name === "lastName") {
+    } else if (name === "last_name") {
       const re = /^[A-Za-z]+$/;
       if (!re.test(value)) {
         setRegisterErrorMessage((prev) => ({
@@ -121,6 +121,20 @@ const Register = () => {
         };
         setFormData(newArr);
       }
+    } else if (name === "confirm_password") {
+      if (value !== formData.password) {
+        setRegisterErrorMessage((prev) => ({
+          ...prev,
+          [name]: "Password and Confirm Password should match",
+        }));
+        console.log(registerErrorMessage);
+      } else {
+        if (registerErrorMessage.hasOwnProperty(name)) {
+          const errMessage = registerErrorMessage;
+          delete errMessage[name];
+          setRegisterErrorMessage(errMessage);
+        }
+      }
     }
   };
 
@@ -132,9 +146,11 @@ const Register = () => {
 
       response
         .then((res) => {
-          const token = res.token;
-          if (token) {
-            Cookies.set("jwt", token, { expires: 7 });
+          if (res.tokens) {
+            const { refresh, access } = res.tokens;
+
+            Cookies.set("jwt", access, { expires: 7 });
+            Cookies.set("jwt_referesh", refresh, { expires: 7 });
             verifyUser();
             navigate("/");
           }
@@ -187,35 +203,35 @@ const Register = () => {
                   data-testid='register-form'
                   onSubmit={(e: React.FormEvent<HTMLFormElement>) => registerHandle(e)}
                 >
-                  {registerErrorMessage.hasOwnProperty("firstName") && (
+                  {registerErrorMessage.hasOwnProperty("first_name") && (
                     <>
-                      <Alert severity='error'>{registerErrorMessage.firstName}</Alert>
+                      <Alert severity='error'>{registerErrorMessage.first_name}</Alert>
                     </>
                   )}
                   <TextField
                     margin='normal'
                     required
                     fullWidth
-                    id='firstName'
+                    id='first_name'
                     label='First Name'
-                    name='firstName'
-                    autoComplete='firstName'
+                    name='first_name'
+                    autoComplete='first_name'
                     onChange={(e) => handleChange(e)}
                     onBlur={(e) => handleBlur(e)}
                   />
-                  {registerErrorMessage.hasOwnProperty("lastName") && (
+                  {registerErrorMessage.hasOwnProperty("last_name") && (
                     <>
-                      <Alert severity='error'>{registerErrorMessage.lastName}</Alert>
+                      <Alert severity='error'>{registerErrorMessage.last_name}</Alert>
                     </>
                   )}
                   <TextField
                     margin='normal'
                     required
                     fullWidth
-                    id='lastName'
+                    id='last_name'
                     label='Last Name'
-                    name='lastName'
-                    autoComplete='lastName'
+                    name='last_name'
+                    autoComplete='last_name'
                     onChange={(e) => handleChange(e)}
                     onBlur={(e) => handleBlur(e)}
                   />
@@ -250,6 +266,24 @@ const Register = () => {
                     type='password'
                     id='password'
                     autoComplete='current-password'
+                    onChange={(e) => handleChange(e)}
+                    onBlur={(e) => handleBlur(e)}
+                  />
+                  {registerErrorMessage.hasOwnProperty("confirm_password") && (
+                    <>
+                      <Alert severity='error'>{registerErrorMessage.confirm_password}</Alert>
+                    </>
+                  )}
+                  <TextField
+                    margin='normal'
+                    required
+                    fullWidth
+                    inputProps={{ "data-testid": "confirm_password" }}
+                    name='confirm_password'
+                    label='Confirm Password'
+                    type='password'
+                    id='confirm_password'
+                    // autoComplete='current-password'
                     onChange={(e) => handleChange(e)}
                     onBlur={(e) => handleBlur(e)}
                   />

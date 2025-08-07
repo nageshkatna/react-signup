@@ -2,9 +2,11 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext";
 import PrivateRoutes from "./components/PrivateRoutes";
-// import { GetContentContextProvider } from "./context/GetContentContext";
+import { GetContentContextProvider } from "./context/GetContentContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import CreateUser from "./pages/CreateUser";
 
 const App = () => {
   return (
@@ -18,9 +20,19 @@ const App = () => {
             path='/*'
             element={
               <PrivateRoutes>
-                {/* <GetContentContextProvider>
+                <GetContentContextProvider>
                   <Dashboard />
-                </GetContentContextProvider> */}
+                </GetContentContextProvider>
+              </PrivateRoutes>
+            }
+          />
+          <Route
+            path='/create'
+            element={
+              <PrivateRoutes>
+                <GetContentContextProvider>
+                  <CreateUser />
+                </GetContentContextProvider>
               </PrivateRoutes>
             }
           />

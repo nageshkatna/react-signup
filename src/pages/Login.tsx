@@ -60,13 +60,14 @@ const Login = () => {
       const response = AuthenticationService.authenticate(formData);
       response
         .then((res) => {
-          if (res.message) {
+          if (res.non_field_errors) {
             setLoginErrorMessage("Invalid Username or Password");
             return;
           }
-          const token = res.token;
-          if (token) {
-            Cookies.set("jwt", token, { expires: 7 });
+          const { refresh, access } = res;
+          if (refresh && access) {
+            Cookies.set("jwt", access, { expires: 7 });
+            Cookies.set("jwt_refresh", refresh, { expires: 7 });
             verifyUser();
             navigate("/");
           }
