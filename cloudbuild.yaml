@@ -25,6 +25,6 @@ steps:
         "--allow-unauthenticated",
       ]
 images:
-  - us-central1-docker.pkg.dev/neat-environs-468316-i2/react-signup/vite-react-image
+  - northamerica-northeast2.pkg.dev/neat-environs-468316-i2/react-signup/vite-react-image
 options:
   logging: CLOUD_LOGGING_ONLY
